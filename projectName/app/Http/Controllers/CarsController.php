@@ -8,10 +8,22 @@ use Illuminate\Http\Request;
 class CarsController extends Controller
 {
     // Get all cars
-    public function getAll()
+    public function getAll(int $param)
     {
-        return Car::all();
+        try {
+            // Get the 'per_page' parameter from the request, default to 10 if not provided
+           
+    
+            // Ensure perPage is a positive integer to avoid issues
+            $perPage = is_numeric($param) && $param > 0 ? (int) $param : 10;
+            
+    
+            return Car::paginate();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve cars'], 500);
+        }
     }
+    
 
     // Get car by ID
     public function getById($id)
@@ -75,5 +87,5 @@ class CarsController extends Controller
         return response()->json(['message' => 'Car deleted successfully']);
     }
 
-    
+
 }

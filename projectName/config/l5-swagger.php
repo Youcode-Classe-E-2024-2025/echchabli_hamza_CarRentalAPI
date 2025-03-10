@@ -4,6 +4,17 @@ return [
     'default' => 'default',
     'documentations' => [
         'default' => [
+            'info' => [
+        'title' => 'Vehicle Rental API',
+        'description' => 'This API allows users to rent cars, manage rentals, and authenticate.',
+        'version' => '1.0.0',
+    ],
+    'servers' => [
+        [
+            'url' => env('APP_URL', 'http://localhost:8000'),
+            'description' => 'Local development server',
+        ],
+    ],
             'api' => [
                 'title' => 'L5 Swagger UI',
             ],

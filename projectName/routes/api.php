@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/cars', [CarsController::class, 'getAll']);
+Route::get('/cars/pagin/{param}', [CarsController::class, 'getAll']);
 
 
 Route::get('/cars/{id}', [CarsController::class, 'getById']);
