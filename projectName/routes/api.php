@@ -3,6 +3,7 @@
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\RentalsController; 
+use App\Http\Controllers\PaymentsController; 
 use Illuminate\Support\Facades\Route;
 
 
@@ -31,6 +32,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/rentals/{id}', [RentalsController::class, 'delete']);
 
 });
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/payments', [PaymentsController::class, 'getUserPaymentsById']);
+    Route::get('/payments/rental/{rentalId}', [PaymentsController::class, 'getPaymentByRentalId']);
+    Route::post('/payments', [PaymentsController::class, 'createOne']);
+    Route::put('/payments/{id}', [PaymentsController::class, 'updateOne']);
+    Route::delete('/payments/{id}', [PaymentsController::class, 'deleteOne']);
+});
+
 
 
 
