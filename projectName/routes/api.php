@@ -22,13 +22,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-Route::middleware('auth:sanctum')->get('/rentals', [RentalsController::class, 'getUserRentals']);
+// Route::middleware('auth:sanctum')->get('/rentals', [RentalsController::class, 'getUserRentals']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/rentals', [RentalsController::class, 'create']);
     Route::get('/rentals', [RentalsController::class, 'getUserRentals']);
-    Route::put('/rentals', [RentalsController::class, 'update']);
+    Route::put('/rentals/{id}', [RentalsController::class, 'update']);
     Route::delete('/rentals/{id}', [RentalsController::class, 'delete']);
 
 });
@@ -45,14 +45,10 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-Route::middleware('auth:sanctum')->group(function () {
-
-Route::post('/logout', [AuthController::class, 'logout']);
-});
-
-
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
 
 Route::post('/register', [AuthController::class, 'register']);
+
 Route::post('/login', [AuthController::class, 'login']);

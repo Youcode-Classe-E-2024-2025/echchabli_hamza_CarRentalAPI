@@ -69,7 +69,33 @@ public function getAll(int $param)
     }
 }
 
-    // Get car by ID
+    /**
+     * @OA\Get(
+     *     path="/api/cars/{id}",
+     *     summary="Get car by ID",
+     *     description="Retrieve a specific car by its ID",
+     *     tags={"Cars"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the car to retrieve",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(ref="#/components/schemas/Car")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Car not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Car not found")
+     *         )
+     *     )
+     * )
+     */
     public function getById($id)
     {
         $car = Car::find($id);
@@ -81,7 +107,45 @@ public function getAll(int $param)
         return response()->json($car);
     }
 
-    // Create a new car
+    /**
+     * @OA\Post(
+     *     path="/api/cars",
+     *     summary="Create a new car",
+     *     description="Create a new car record",
+     *     tags={"Cars"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"company", "model", "license_plate", "price_per_day"},
+     *             @OA\Property(property="company", type="string", example="Honda"),
+     *             @OA\Property(property="model", type="string", example="Civic"),
+     *             @OA\Property(property="license_plate", type="string", example="XYZ-789"),
+     *             @OA\Property(property="price_per_day", type="number", format="float", example=45.50)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Car created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Car")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
+     */
     public function create(Request $request)
     {
         $validated = $request->validate([
@@ -96,7 +160,58 @@ public function getAll(int $param)
         return response()->json($car, 201);
     }
 
-    // Update an existing car
+    /**
+     * @OA\Put(
+     *     path="/api/cars/{id}",
+     *     summary="Update a car",
+     *     description="Update an existing car record",
+     *     tags={"Cars"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the car to update",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"company", "model", "price_per_day"},
+     *             @OA\Property(property="company", type="string", example="Honda"),
+     *             @OA\Property(property="model", type="string", example="Civic"),
+     *             @OA\Property(property="price_per_day", type="number", format="float", example=45.50)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Car updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Car")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Car not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Car not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         $car = Car::find($id);
@@ -117,7 +232,43 @@ public function getAll(int $param)
         return response()->json($car);
     }
 
-    // Delete a car by ID
+    /**
+     * @OA\Delete(
+     *     path="/api/cars/{id}",
+     *     summary="Delete a car",
+     *     description="Delete a car record by ID",
+     *     tags={"Cars"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the car to delete",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Car deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Car deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Car not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Car not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
+     */
     public function delete($id)
     {
         $car = Car::find($id);
@@ -130,6 +281,4 @@ public function getAll(int $param)
 
         return response()->json(['message' => 'Car deleted successfully']);
     }
-
-
 }
