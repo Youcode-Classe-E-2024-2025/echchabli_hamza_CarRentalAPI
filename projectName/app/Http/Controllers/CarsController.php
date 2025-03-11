@@ -4,26 +4,70 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use Illuminate\Http\Request;
+/**
+ * @OA\Schema(
+ *     schema="Car",
+ *     title="Car",
+ *     description="Car model",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="company", type="string", example="Toyota"),
+ *     @OA\Property(property="model", type="string", example="Corolla"),
+ *     @OA\Property(property="license_plate", type="string", example="ABC-123"),
+ *     @OA\Property(property="price_per_day", type="number", format="float", example=50.00),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-03-10T12:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-03-10T12:00:00Z")
+ * )
+ */
 
 class CarsController extends Controller
 {
-    // Get all cars
-    public function getAll(int $param)
-    {
-        try {
-            // Get the 'per_page' parameter from the request, default to 10 if not provided
-           
-    
-            // Ensure perPage is a positive integer to avoid issues
-            $perPage = is_numeric($param) && $param > 0 ? (int) $param : 10;
-            
-    
-            return Car::paginate();
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to retrieve cars'], 500);
-        }
+   /**
+ * @OA\Get(
+ *     path="/api/cars/pagin/{param}",
+ *     summary="Get all cars with pagination",
+ *     description="Retrieve a paginated list of cars",
+ *     tags={"Cars"},
+ *     @OA\Parameter(
+ *         name="param",
+ *         in="path",
+ *         required=true,
+ *         description="Number of items per page",
+ *         @OA\Schema(type="integer", example=10)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful response",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Car")),
+ *             @OA\Property(property="pagination", type="object",
+ *                 @OA\Property(property="total", type="integer", example=100),
+ *                 @OA\Property(property="per_page", type="integer", example=10),
+ *                 @OA\Property(property="current_page", type="integer", example=1),
+ *                 @OA\Property(property="last_page", type="integer", example=10),
+ *                 @OA\Property(property="next_page_url", type="string", nullable=true, example=null),
+ *                 @OA\Property(property="prev_page_url", type="string", nullable=true, example=null)
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal server error"
+ *     )
+ * )
+ */
+public function getAll(int $param)
+{
+    try {
+        // Ensure perPage is a positive integer to avoid issues
+        $perPage = $param > 0 ? (int) $param : 10;
+
+        // Fetch paginated cars
+        return response()->json(Car::paginate($perPage));
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to retrieve cars'], 500);
     }
-    
+}
 
     // Get car by ID
     public function getById($id)

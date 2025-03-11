@@ -40,14 +40,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payments', [PaymentsController::class, 'createOne']);
     Route::put('/payments/{id}', [PaymentsController::class, 'updateOne']);
     Route::delete('/payments/{id}', [PaymentsController::class, 'deleteOne']);
+
+
 });
+
+
+Route::middleware('auth:sanctum')->group(function () {
+
+Route::post('/logout', [AuthController::class, 'logout']);
+});
+
 
 
 
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
-
-
-

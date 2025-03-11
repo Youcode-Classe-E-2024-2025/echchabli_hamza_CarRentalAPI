@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\Charge;
+use Stripe\Exception\ApiErrorException;
 use App\Models\Payment;
 use App\Models\Rental;
 use Illuminate\Support\Facades\Auth;
