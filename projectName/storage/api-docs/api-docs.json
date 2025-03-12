@@ -443,6 +443,61 @@
                 ]
             }
         },
+        "/api/selectCars": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Filter cars by company and model",
+                "operationId": "dfc1d36f42f2541181e6e44261176b40",
+                "parameters": [
+                    {
+                        "name": "company",
+                        "in": "query",
+                        "description": "Company name to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "model",
+                        "in": "query",
+                        "description": "Model name to filter by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filtered cars list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Car"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No cars found matching the criteria"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/payments": {
             "get": {
                 "tags": [

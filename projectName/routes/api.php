@@ -16,9 +16,11 @@ Route::get('/cars/pagin/{param}', [CarsController::class, 'getAll']);
 Route::middleware('auth:sanctum')->group(function () {
    
     Route::apiResource('cars', CarsController::class);
+
+   
 });
 
-
+Route::get('selectCars', [CarsController::class, 'filterByModelAndCompany']);
 
 
 Route::middleware('auth:sanctum')->group(function () {

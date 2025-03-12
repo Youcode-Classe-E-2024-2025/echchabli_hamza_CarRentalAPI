@@ -255,6 +255,70 @@ class CarsController extends Controller
 
   
    
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/selectCars",
+     *     summary="Filter cars by company and model",
+     *     tags={"Cars"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="company",
+     *         in="query",
+     *         required=false,
+     *         description="Company name to filter by",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="model",
+     *         in="query",
+     *         required=false,
+     *         description="Model name to filter by",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Filtered cars list",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Car")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No cars found matching the criteria"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
+    public function filterByModelAndCompany(Request $request)
+    {
+       
+        $query = Car::query();
+
+        if ($request->has('company')) {
+            $query->where('company', 'like', '%' . $request->company . '%');
+        }
+
+        if ($request->has('model')) {
+            $query->where('model', 'like', '%' . $request->model . '%');
+        }
+
+        $cars = $query->get();
+
+        if ($cars->isEmpty()) {
+            return response()->json(['message' => 'No cars found matching the criteria'], 404);
+        }
+
+        return $cars;
+    }
 }
 
 
+
+
+   
