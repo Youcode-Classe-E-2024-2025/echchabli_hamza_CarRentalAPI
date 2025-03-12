@@ -11,37 +11,31 @@ use Illuminate\Support\Facades\Route;
 Route::get('/cars/pagin/{param}', [CarsController::class, 'getAll']);
 
 
-Route::get('/cars/{id}', [CarsController::class, 'getById']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/cars', [CarsController::class, 'create']);
-    Route::put('/cars/{id}', [CarsController::class, 'update']);
-    Route::delete('/cars/{id}', [CarsController::class, 'delete']);
+   
+    Route::apiResource('cars', CarsController::class);
 });
 
 
 
-// Route::middleware('auth:sanctum')->get('/rentals', [RentalsController::class, 'getUserRentals']);
-
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/rentals', [RentalsController::class, 'create']);
-    Route::get('/rentals', [RentalsController::class, 'getUserRentals']);
-    Route::put('/rentals/{id}', [RentalsController::class, 'update']);
-    Route::delete('/rentals/{id}', [RentalsController::class, 'delete']);
+    // Rentals Resource Routes
+    Route::apiResource('rentals', RentalsController::class);
 
-});
+    // Custom Routes for Rentals
+    // Route::get('/rentals', [RentalsController::class, 'getUserRentals']); // Get user-specific rentals
+    // Route::get('/rentals/{id}', [RentalsController::class, 'show']); // Get a specific rental (if needed)
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/payments', [PaymentsController::class, 'getUserPaymentsById']);
-    Route::get('/payments/rental/{rentalId}', [PaymentsController::class, 'getPaymentByRentalId']);
-    Route::post('/payments', [PaymentsController::class, 'createOne']);
-    Route::put('/payments/{id}', [PaymentsController::class, 'updateOne']);
-    Route::delete('/payments/{id}', [PaymentsController::class, 'deleteOne']);
+    
+    Route::apiResource('payments', PaymentsController::class);
 
 
+    // Custom Routes for Payments
+    Route::get('/payments/user/{user_id}', [PaymentsController::class, 'getUserPaymentsById']); // Get user-specific payments
+    Route::get('/payments/rental/{rentalId}', [PaymentsController::class, 'getPaymentByRentalId']); // Get payments by rental ID  
 });
 
 
