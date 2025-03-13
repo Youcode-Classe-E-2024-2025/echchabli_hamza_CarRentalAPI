@@ -562,11 +562,11 @@
                                     },
                                     "method": {
                                         "type": "string",
-                                        "example": "Credit Card"
+                                        "example": "cash"
                                     },
                                     "status": {
                                         "type": "string",
-                                        "example": "Completed"
+                                        "example": "completed"
                                     }
                                 },
                                 "type": "object"
@@ -575,18 +575,15 @@
                     }
                 },
                 "responses": {
-                    "201": {
-                        "description": "Payment created successfully",
+                    "200": {
+                        "description": "Checkout session URL",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "checkout_url": {
                                             "type": "string",
-                                            "example": "Payment created successfully"
-                                        },
-                                        "data": {
-                                            "type": "object"
+                                            "example": "https://checkout.stripe.com/pay/cs_test_..."
                                         }
                                     },
                                     "type": "object"

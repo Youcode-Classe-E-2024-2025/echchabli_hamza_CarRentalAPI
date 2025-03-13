@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('selectCars', [CarsController::class, 'filterByModelAndCompany']);
 
 
+
 Route::middleware('auth:sanctum')->group(function () {
     // Rentals Resource Routes
     Route::apiResource('rentals', RentalsController::class);
@@ -35,10 +36,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('payments', PaymentsController::class);
 
 
+   
+
     // Custom Routes for Payments
     Route::get('/payments/user/{user_id}', [PaymentsController::class, 'getUserPaymentsById']); // Get user-specific payments
     Route::get('/payments/rental/{rentalId}', [PaymentsController::class, 'getPaymentByRentalId']); // Get payments by rental ID  
 });
+ Route::get('/payment/success', [PaymentsController::class, 'success'])->name('payment.success');
+    Route::get('/payments/success', [PaymentsController::class, 'cancel'])->name('payment.cancel');
 
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
